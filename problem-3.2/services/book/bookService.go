@@ -19,7 +19,7 @@ func GetBooks() ([]models.Book, error) {
 func GetBookById(targetId int) (models.Book, int, error) {
 	var book models.Book
 
-	res := config.Db.Find(&Book, targetId)
+	res := config.Db.Find(&book, targetId)
 
 	if res.Error != nil {
 		return models.Book{}, 0, res.Error

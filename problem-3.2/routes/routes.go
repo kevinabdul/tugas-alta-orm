@@ -21,15 +21,15 @@ func New() *echo.Echo {
 
 
 
-	e.GET("/books", user.GetBooksController)
+	e.GET("/books", book.GetBooksController)
 
-	e.GET("/books/:id", user.GetBookByIdController)
+	e.GET("/books/:id", book.GetBookByIdController)
 
-	e.POST("/books", user.AddBookController)
+	e.POST("/books", book.AddBookController)
 
-	e.PUT("/books/:id", user.EditBookController)
+	e.PUT("/books/:id", book.EditBookController)
 
-	e.DELETE("/books/:id", user.DeleteBookController)
+	e.DELETE("/books/:id", book.DeleteBookController)
 
 	return e
 }
