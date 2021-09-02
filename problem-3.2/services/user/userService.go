@@ -1,8 +1,10 @@
 package services
 
 import (
+	//"fmt"
 	"ormalta/problem-3.2/config"
 	"ormalta/problem-3.2/models"
+	"ormalta/problem-3.2/middlewares"
 )
 
 
@@ -91,5 +93,22 @@ func DeleteUser(targetId int) (models.User, int, error) {
 	}
 
 	return deleted, 1, nil
+
+}
+
+func LoginUser(user *models.User) (string ,error) {
+	res := config.Db.Where("email = ? AND password = ?", user.Email, user.Password).First(user)
+
+	if res.Error != nil {
+		return "", res.Error
+	}
+
+	token, err := middlewares.CreateToken(user.Id)
+
+	if err != nil {
+		return "", err
+	}
+
+	return token, nil
 
 }

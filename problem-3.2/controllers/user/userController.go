@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -9,10 +8,10 @@ import (
 	models "ormalta/problem-3.2/models"
 
 	"github.com/labstack/echo/v4"
+	//"github.com/golang-jwt/jwt"
 )
 
 func GetUsersController(c echo.Context) error {
-	fmt.Println("Inside getusersController")
 	users, err := user.GetUsers()
 
 	if err != nil {
@@ -24,7 +23,7 @@ func GetUsersController(c echo.Context) error {
 
 func GetUserByIdController(c echo.Context) error {
 	targetId, _ := strconv.Atoi(c.Param("id"))
-
+	
 	targetUser, rowsAffected, err := user.GetUserById(targetId)
 
 	if err != nil {
@@ -54,7 +53,7 @@ func AddUserController(c echo.Context) error {
 		Status string
 		Message string
 		User models.User
-	}{Status: "succes", Message: "User has been created!", User: res})
+	}{Status: "success", Message: "User has been created!", User: res})
 
 }
 
@@ -81,7 +80,7 @@ func EditUserController(c echo.Context) error {
 		Status string
 		Message string
 		User models.User
-	}{Status: "succes", Message: "User has been updated!", User: edittedUser})
+	}{Status: "success", Message: "User has been updated!", User: edittedUser})
 }
 
 func DeleteUserController(c echo.Context) error {
@@ -105,6 +104,23 @@ func DeleteUserController(c echo.Context) error {
 		Status string
 		Message string
 		User models.User
-	}{Status: "succes", Message: "User has been deleted!", User: deleted})
+	}{Status: "success", Message: "User has been deleted!", User: deleted})
 
+}
+
+func LoginUserController(c echo.Context) error {
+	loggingUser := &models.User{}
+	c.Bind(loggingUser)
+
+	token, err := user.LoginUser(loggingUser)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	
+	return c.JSON(http.StatusOK, struct {
+		Status string
+		Message string
+		Token string
+	}{Status: "success", Message: "You are logged in!", Token: token})
 }

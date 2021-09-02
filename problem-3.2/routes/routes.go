@@ -1,35 +1,19 @@
 package routes
 
 import (
-	user "ormalta/problem-3.2/controllers/user"
-	book "ormalta/problem-3.2/controllers/book"
 	"github.com/labstack/echo/v4"
 )
 
+var e *echo.Echo
+
 func New() *echo.Echo {
-	e := echo.New()
+	e = echo.New()
 
-	e.GET("/users", user.GetUsersController)
+	registerRootMiddlewares()
 
-	e.GET("/users/:id", user.GetUserByIdController)
+	registerUserRoutes()
 
-	e.POST("/users", user.AddUserController)
-
-	e.PUT("/users/:id", user.EditUserController)
-
-	e.DELETE("/users/:id", user.DeleteUserController)
-
-
-
-	e.GET("/books", book.GetBooksController)
-
-	e.GET("/books/:id", book.GetBookByIdController)
-
-	e.POST("/books", book.AddBookController)
-
-	e.PUT("/books/:id", book.EditBookController)
-
-	e.DELETE("/books/:id", book.DeleteBookController)
+	registerBookRoutes()
 
 	return e
 }
